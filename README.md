@@ -1,27 +1,76 @@
-# Em::Rocketio::Linda::Client
+em-rocketio-linda-client
+========================
+[Sinatra::RocketIO::Linda](https://github.com/shokai/sinatra-rocketio-linda) Client for eventmachine
 
-TODO: Write a gem description
+* https://github.com/shokai/em-rocketio-client-linda
 
-## Installation
 
-Add this line to your application's Gemfile:
+Installation
+------------
 
-    gem 'em-rocketio-linda-client'
+    % gem install em-rocketio-linda-client
 
-And then execute:
+Usage
+-----
 
-    $ bundle
+```ruby
+require 'eventmachine'
+require 'em-rocketio-linda-client'
 
-Or install it yourself as:
+EM::run do
+  linda = EM::RocketIO::Linda::Client.new('http://localhost:5000')
+  ts = linda.tuplespace["test_space"]
 
-    $ gem install em-rocketio-linda-client
+  linda.io.on :connect do |session|
+    puts "#{linda.io.type} connect!! (sessin_id:#{session})"
+  end
 
-## Usage
+  linda.io.on :disconnect do
+    puts "#{io.type} disconnect"
+  end
 
-TODO: Write usage instructions here
+  io.on :error do |err|
+    STDERR.puts err
+  end
 
-## Contributing
+  ## watch Tuples
+  ts.watch [1,2] do |tuple|
+    p tuple
+  end
 
+  ## write a Tuple
+  EM::add_periodic_timer 1 do
+    ts.write [1, 2, Time.now]
+  end
+end
+```
+
+
+Sample
+------
+
+    % ruby sample/sample.rb
+
+
+Test
+----
+
+    % gem install bundler
+    % bundle install
+
+start server
+
+    % export PORT=5000
+    % export WS_PORT=9000
+    % rake test_server
+
+run test
+
+    % rake test
+
+
+Contributing
+------------
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)

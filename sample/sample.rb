@@ -8,7 +8,7 @@ EM::run do
   ts = client.tuplespace["test_spae"]
 
   client.io.on :connect do
-    puts "connect #{client.io.type}"
+    puts "connect #{client.io.type} (#{client.io.session})"
 
     ts.watch [1,2] do |tuple|
       p tuple

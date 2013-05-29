@@ -1,3 +1,7 @@
+=== 0.0.2 2013-05-29
+
+* bugfix callback_id duplication in client lib
+
 === 0.0.1 2013-05-29
 
 * first release

@@ -1,3 +1,4 @@
+require "eventmachine"
 require "em-rocketio-client"
 require "event_emitter"
 
@@ -7,7 +8,7 @@ require "em-rocketio-linda-client/client"
 module EM
   module RocketIO
     module Linda
-      module Client
+      class Client
       end
     end
   end

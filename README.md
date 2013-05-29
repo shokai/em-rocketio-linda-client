@@ -21,8 +21,8 @@ EM::run do
   linda = EM::RocketIO::Linda::Client.new('http://localhost:5000')
   ts = linda.tuplespace["test_space"]
 
-  linda.io.on :connect do |session|
-    puts "#{linda.io.type} connect!! (sessin_id:#{session})"
+  linda.io.on :connect do
+    puts "#{linda.io.type} connect!! (sessin_id:#{linda.io.session})"
   end
 
   linda.io.on :disconnect do

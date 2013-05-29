@@ -1,6 +1,6 @@
 require File.expand_path 'test_helper', File.dirname(__FILE__)
 
-class TestRubyClient < MiniTest::Test
+class TestEmRocketIOLindaClient < MiniTest::Test
 
   def test_write_read_take
     ts_name = "ts_#{rand Time.now.to_i}"

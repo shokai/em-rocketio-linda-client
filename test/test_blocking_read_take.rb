@@ -3,7 +3,7 @@ require File.expand_path 'test_helper', File.dirname(__FILE__)
 class TestBlockingReadTake < MiniTest::Test
 
   def test_blocking_take
-    ts_name = "ts_#{rand Time.now.to_i}"
+    ts_name = "ts_blocking_take_#{rand Time.now.to_i}"
     results = Array.new
 
     EM::run do
@@ -41,6 +41,33 @@ class TestBlockingReadTake < MiniTest::Test
     assert_equal results.shift, ["blocking", "take", 3]
     assert_equal results.shift, ["blocking", "take", 2]
     assert_equal results.shift, ["blocking", "take", 1]
+  end
+
+
+  def test_blocking_read
+    ts_name = "ts_blocking_read_#{rand Time.now.to_i}"
+    results = Array.new
+
+    EM::run do
+      client = EM::RocketIO::Linda::Client.new App.url
+      ts = client.tuplespace[ts_name]
+      client.io.on :connect do
+        EM::defer do
+          1.upto(3) do |i|
+            ts.write ["blocking", "read", i]
+            results.push ts.read ["blocking", "read"]
+          end
+          EM::add_timer 1 do
+            EM::stop
+          end
+        end
+      end
+    end
+
+    assert_equal results.size, 3
+    assert_equal results.shift, ["blocking", "read", 1]
+    assert_equal results.shift, ["blocking", "read", 2]
+    assert_equal results.shift, ["blocking", "read", 3]
   end
 
 end

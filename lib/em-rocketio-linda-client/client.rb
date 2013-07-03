@@ -39,8 +39,20 @@ module EM
               raise ArgumentError, "tuple must be Array or Hash"
             end
             callback_id = "#{Time.now.to_i}#{Time.now.usec}_#{rand(1000000).to_i}"
-            @linda.io.once "__linda_read_callback_#{callback_id}", &block
+            if block_given?
+              @linda.io.once "__linda_read_callback_#{callback_id}", &block
+              @linda.io.push "__linda_read", [@name, tuple, callback_id]
+              return
+            end
+            result_tuple = nil
+            @linda.io.once "__linda_read_callback_#{callback_id}" do |tuple|
+              result_tuple = tuple
+            end
             @linda.io.push "__linda_read", [@name, tuple, callback_id]
+            while !result_tuple do
+              sleep 0.1
+            end
+            return result_tuple
           end
 
           def take(tuple, &block)
@@ -48,8 +60,20 @@ module EM
               raise ArgumentError, "tuple must be Array or Hash"
             end
             callback_id = "#{Time.now.to_i}#{Time.now.usec}_#{rand(1000000).to_i}"
-            @linda.io.once "__linda_take_callback_#{callback_id}", &block
+            if block_given?
+              @linda.io.once "__linda_take_callback_#{callback_id}", &block
+              @linda.io.push "__linda_take", [@name, tuple, callback_id]
+              return
+            end
+            result_tuple = nil
+            @linda.io.once "__linda_take_callback_#{callback_id}" do |tuple|
+              result_tuple = tuple
+            end
             @linda.io.push "__linda_take", [@name, tuple, callback_id]
+            while !result_tuple do
+              sleep 0.1
+            end
+            return result_tuple
           end
 
           def watch(tuple, &block)

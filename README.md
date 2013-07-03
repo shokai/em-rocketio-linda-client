@@ -62,11 +62,11 @@ start server
 
     % export PORT=5000
     % export WS_PORT=9000
-    % rake test_server
+    % bundle exec rake test_server
 
 run test
 
-    % rake test
+    % bundle exec rake test
 
 
 Contributing

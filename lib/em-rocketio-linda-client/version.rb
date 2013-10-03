@@ -2,7 +2,7 @@ module EM
   module RocketIO
     module Linda
       class Client
-        VERSION = "0.0.3"
+        VERSION = "1.0.0"
       end
     end
   end

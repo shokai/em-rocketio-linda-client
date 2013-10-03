@@ -34,7 +34,7 @@ EM::run do
   end
 
   ## watch Tuples
-  ts.watch [1,2] do |tuple|
+  ts.watch [1,2] do |tuple, info|
     p tuple
   end
 

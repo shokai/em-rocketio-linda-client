@@ -1,6 +1,7 @@
 require "eventmachine"
 require "em-rocketio-client"
 require "event_emitter"
+require "hashie"
 
 require "em-rocketio-linda-client/version"
 require "em-rocketio-linda-client/client"

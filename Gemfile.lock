@@ -5,6 +5,7 @@ PATH
       em-rocketio-client
       event_emitter
       eventmachine
+      hashie
 
 GEM
   remote: https://rubygems.org/

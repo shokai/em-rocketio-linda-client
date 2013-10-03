@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "thin"
 
   spec.add_dependency "em-rocketio-client"
+  spec.add_dependency "hashie"
   spec.add_dependency "eventmachine"
   spec.add_dependency "event_emitter"
 end

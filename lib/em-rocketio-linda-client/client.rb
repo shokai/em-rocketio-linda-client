@@ -95,6 +95,18 @@ module EM
             @linda.io.push "__linda_watch", [@name, tuple, callback_id]
           end
 
+          def list(tuple, &block)
+            unless [Hash, Array].include? tuple.class
+              raise ArgumentError, "tuple must be Array or Hash"
+            end
+            return unless block_given?
+            callback_id = "#{Time.now.to_i}#{Time.now.usec}_#{rand(1000000).to_i}"
+            @linda.io.on "__linda_list_callback_#{callback_id}" do |list|
+              block.call list
+            end
+            @linda.io.push "__linda_list", [@name, tuple, callback_id]
+          end
+
         end
 
       end

@@ -12,7 +12,7 @@ GEM
   specs:
     addressable (2.3.5)
     args_parser (0.2.0)
-    backports (3.3.4)
+    backports (3.3.5)
     cookiejar (0.3.0)
     daemons (1.1.9)
     em-cometio-client (0.1.1)
@@ -37,11 +37,11 @@ GEM
     em-websocket (0.5.0)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.5.3)
-    em-websocket-client (0.1.1)
+    em-websocket-client (0.1.2)
       eventmachine
-      libwebsocket
-    em-websocketio-client (0.0.3)
-      em-websocket-client
+      websocket
+    em-websocketio-client (0.0.4)
+      em-websocket-client (= 0.1.2)
       event_emitter
       eventmachine
       json
@@ -49,29 +49,26 @@ GEM
     eventmachine (1.0.3)
     hashie (2.0.5)
     http_parser.rb (0.5.3)
-    httparty (0.11.0)
-      multi_json (~> 1.0)
+    httparty (0.12.0)
+      json (~> 1.8)
       multi_xml (>= 0.5.2)
-    json (1.8.0)
-    libwebsocket (0.1.8)
-      addressable
-      websocket
-    linda (0.0.4)
+    json (1.8.1)
+    linda (0.1.0)
       json
     minitest (5.0.8)
-    multi_json (1.8.0)
+    multi_json (1.8.2)
     multi_xml (0.5.5)
     rack (1.5.2)
-    rack-protection (1.5.0)
+    rack-protection (1.5.1)
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
     rake (10.1.0)
-    sinatra (1.4.3)
+    sinatra (1.4.4)
       rack (~> 1.4)
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
-    sinatra-cometio (0.5.9)
+    sinatra-cometio (0.6.0)
       event_emitter (>= 0.2.5)
       eventmachine (>= 1.0.0)
       httparty
@@ -85,21 +82,21 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (~> 1.3)
-    sinatra-rocketio (0.3.0)
+    sinatra-rocketio (0.3.3)
       event_emitter (>= 0.2.5)
       eventmachine (>= 1.0.0)
       hashie
       sinatra
       sinatra-cometio (>= 0.5.9)
-      sinatra-websocketio (>= 0.3.7)
-    sinatra-rocketio-linda (1.0.0)
+      sinatra-websocketio (>= 0.4.0)
+    sinatra-rocketio-linda (1.1.0)
       args_parser
       event_emitter
       hashie
       linda (>= 0.0.4)
       sinatra
       sinatra-rocketio (~> 0.3)
-    sinatra-websocketio (0.3.7)
+    sinatra-websocketio (0.4.1)
       em-websocket (>= 0.5.0)
       event_emitter (>= 0.2.4)
       eventmachine (>= 1.0.0)
@@ -107,12 +104,12 @@ GEM
       sinatra (>= 1.3.0)
       sinatra-contrib (>= 1.3.2)
       websocket-client-simple
-    thin (1.6.0)
+    thin (1.6.1)
       daemons (>= 1.0.9)
       eventmachine (>= 1.0.0)
-      rack (>= 1.5.0)
+      rack (>= 1.0.0)
     tilt (1.4.1)
-    websocket (1.1.1)
+    websocket (1.1.2)
     websocket-client-simple (0.0.5)
       event_emitter
       websocket

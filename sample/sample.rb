@@ -18,6 +18,10 @@ EM::run do
 
     EM::add_periodic_timer 1 do
       ts.write [1,2, Time.now]
+
+      ts.list [1,2] do |list|
+        puts "#{list.size} tuples in exists"
+      end
     end
   end
 

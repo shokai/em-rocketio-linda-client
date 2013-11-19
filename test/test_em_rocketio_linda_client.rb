@@ -196,12 +196,51 @@ class TestEmRocketIOLindaClient < MiniTest::Test
     assert_equal _tuple1, [1,2,3]
     assert_equal _tuple2, [1,2,3]
     assert_equal _tuple3, [1,2,3]
-    assert_equal _info1.class, Sinatra::RocketIO::Linda::Client::TupleInfo
-    assert_equal _info2.class, Sinatra::RocketIO::Linda::Client::TupleInfo
-    assert_equal _info3.class, Sinatra::RocketIO::Linda::Client::TupleInfo
+    assert_equal _info1.class, EM::RocketIO::Linda::Client::TupleInfo
+    assert_equal _info2.class, EM::RocketIO::Linda::Client::TupleInfo
+    assert_equal _info3.class, EM::RocketIO::Linda::Client::TupleInfo
     assert _info1.from =~ /^\d+\.\d+\.\d+\.\d+$/
     assert _info2.from =~ /^\d+\.\d+\.\d+\.\d+$/
     assert _info3.from =~ /^\d+\.\d+\.\d+\.\d+$/
+  end
+
+  def test_tuple_list
+    _tuple1 = ["a", "b", "c"]
+    _tuple2 = ["a", "b"]
+    _tuple3 = ["a", "b", "c", 1234]
+    _result1 = nil
+    _result2 = nil
+    EM::run do
+      client = EM::RocketIO::Linda::Client.new App.url
+      ts = client.tuplespace["ts_#{rand Time.now.to_i}"]
+
+      client.io.on :connect do
+        ts.write _tuple1
+        ts.write _tuple2
+        ts.write _tuple3
+
+        ts.list ["a","b"] do |list|
+          _result1 = list
+        end
+
+        ts.list ["a", "b", "c"] do |list|
+          _result2 = list
+        end
+      end
+
+      EM::defer do
+        50.times do
+          sleep 0.1
+          break if _result2
+        end
+        EM::add_timer 1 do
+          EM::stop
+        end
+      end
+    end
+
+    assert_equal _result1, [_tuple3, _tuple2, _tuple1]
+    assert_equal _result2, [_tuple3, _tuple1]
   end
 
 end

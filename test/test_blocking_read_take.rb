@@ -70,4 +70,41 @@ class TestBlockingReadTake < MiniTest::Test
     assert_equal results.shift, ["blocking", "read", 3]
   end
 
+  def test_blocking_list
+    ts_name = "ts_blocking_read_#{rand Time.now.to_i}"
+    _tuple1 = ["a", "b", "c"]
+    _tuple2 = ["a", "b"]
+    _tuple3 = ["a", "b", "c", 1234]
+    _result1 = nil
+    _result2 = nil
+    EM::run do
+      client = EM::RocketIO::Linda::Client.new App.url
+      ts = client.tuplespace[ts_name]
+      client.io.on :connect do
+        ts.write _tuple1
+        ts.write _tuple2
+        ts.write _tuple3
+
+        _result1 = ts.list ["a", "b"]
+        p _result1
+        _result2 = ts.list ["a", "b", "c"]
+        p _result2
+      end
+
+      EM::defer do
+        50.times do
+          sleep 0.1
+          puts "waiting list"
+          break if _result2
+        end
+        EM::add_timer 1 do
+          EM::stop
+        end
+      end
+    end
+
+    assert_equal _result1, [_tuple3, _tuple2, _tuple1]
+    assert_equal _result2, [_tuple3, _tuple1]
+  end
+
 end

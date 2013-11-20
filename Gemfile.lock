@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    em-rocketio-linda-client (1.1.0)
+    em-rocketio-linda-client (1.1.1)
       em-rocketio-client
       event_emitter
       eventmachine

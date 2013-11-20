@@ -1,3 +1,7 @@
+=== 1.1.1 2013-11-20
+
+* blocking-style TupleSpace#list  #5
+
 === 1.1.0 2013-11-19
 
 * add TupleSpace#list  #5

@@ -41,7 +41,7 @@ module EM
             unless [Hash, Array].include? tuple.class
               raise ArgumentError, "tuple must be Array or Hash"
             end
-            callback_id = "#{Time.now.to_i}#{Time.now.usec}_#{rand(1000000).to_i}"
+            callback_id = make_callback_id
             if block_given?
               @linda.io.once "__linda_read_callback_#{callback_id}" do |data|
                 block.call(data['tuple'], TupleInfo.new(data['info']))
@@ -64,7 +64,7 @@ module EM
             unless [Hash, Array].include? tuple.class
               raise ArgumentError, "tuple must be Array or Hash"
             end
-            callback_id = "#{Time.now.to_i}#{Time.now.usec}_#{rand(1000000).to_i}"
+            callback_id = make_callback_id
             if block_given?
               @linda.io.once "__linda_take_callback_#{callback_id}" do |data|
                 block.call data['tuple'], TupleInfo.new(data['info'])
@@ -88,7 +88,7 @@ module EM
               raise ArgumentError, "tuple must be Array or Hash"
             end
             return unless block_given?
-            callback_id = "#{Time.now.to_i}#{Time.now.usec}_#{rand(1000000).to_i}"
+            callback_id = make_callback_id
             @linda.io.on "__linda_watch_callback_#{callback_id}" do |data|
               block.call data['tuple'], TupleInfo.new(data['info'])
             end
@@ -99,7 +99,7 @@ module EM
             unless [Hash, Array].include? tuple.class
               raise ArgumentError, "tuple must be Array or Hash"
             end
-            callback_id = "#{Time.now.to_i}#{Time.now.usec}_#{rand(1000000).to_i}"
+            callback_id = make_callback_id
             if block_given?
               @linda.io.once "__linda_list_callback_#{callback_id}" do |list|
                 block.call list
@@ -107,6 +107,11 @@ module EM
               @linda.io.push "__linda_list", [@name, tuple, callback_id]
               return
             end
+          end
+
+          private
+          def make_callback_id
+            "#{Time.now.to_i}#{Time.now.usec}_#{rand(1000000).to_i}"
           end
 
         end

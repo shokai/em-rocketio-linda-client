@@ -17,8 +17,10 @@ EM::run do
 
     EM::defer do
       loop do
-        tuple = ts.take [1,2]
+        tuple = ts.take [1,2]  ## read tuple([1,2]) and delete
         puts "blocking take #{tuple}"
+        list = ts.list [1,2]
+        puts "#{list.size} tuples exists."
       end
     end
 

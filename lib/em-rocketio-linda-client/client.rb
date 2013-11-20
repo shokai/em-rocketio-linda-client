@@ -107,6 +107,15 @@ module EM
               @linda.io.push "__linda_list", [@name, tuple, callback_id]
               return
             end
+            results = nil
+            @linda.io.once "__linda_list_callback_#{callback_id}" do |list|
+              results = list
+            end
+            @linda.io.push "__linda_list", [@name, tuple, callback_id]
+            while results == nil do
+              sleep 0.1
+            end
+            return results
           end
 
           private
